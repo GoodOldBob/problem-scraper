@@ -2,7 +2,7 @@
 HackerRank/LeetCode problem/answer scraper 
 ***
 **Requirements:**  
-PhantomJS  
+-PhantomJS  
 Before using do:  
 sudo pip install -r requirements.txt
 
