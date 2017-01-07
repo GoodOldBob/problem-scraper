@@ -3,6 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import getpass
 import time
+import sys
+import argparse
 """
 Before using, make sure PhantomJS is in your PATH.
 """
@@ -19,15 +21,24 @@ def login_hackerrank(driver):
     driver.find_element_by_xpath("//*[@id='legacy-login']/div[1]/p/button").click()
     #driver.save_screenshot("out.png")
 
+def login_google(driver):
+    print("do stuff")
+
 def scrape_hackerrank(driver):
     login_hackerrank(driver)
     time.sleep(5)
+    while True:
+        url = input("Enter the problem url to scrape: ")
+        filename = input("Enter the file name you want to use: ")
+        if url == "stop":
+            break
+        output_file(filename, get_problem_hackerrank(driver, url))
     #driver.save_screenshot("out1.png")
-    url = input("Enter the problem url to scrape: ")
+
+def get_problem_hackerrank(driver, url):
     driver.get(url)
     time.sleep(5)
-    driver.save_screenshot("out2.png")
-
+    #driver.save_screenshot("out2.png")
     html = driver.page_source
     soup = BeautifulSoup(html, "html.parser")
     #codemirror_start = soup.find_all(class_="CodeMirror-code")
@@ -53,9 +64,16 @@ def output_file(filename, code):
     f = open(filename, 'w')
     f.write(code)
 
+parser = argparse.ArgumentParser(description="Save some submissions from "
+                                 "HackerRank.")
+parser.add_argument("-g", "--google", action="store_true", help="use google "
+                    "account for login (default is username/password login)")
+parser.add_argument("-f", "--file-input", action="store_true", help="read from"
+                    " input.file (see README.md)")
+args = parser.parse_args()
 driver = webdriver.PhantomJS()
-output_file("testerino.java", scrape_hackerrank(driver))
-
+if not args.google:
+    scrape_hackerrank(driver)
 #driver.set_window_size(1024, 768)
 
 
