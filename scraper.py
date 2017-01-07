@@ -19,14 +19,29 @@ def login_hackerrank(driver):
     driver.find_element_by_xpath("//input[@data-attr1='UserName']").send_keys(login_name)
     driver.find_element_by_xpath("//input[@data-attr1='UserName' and @id='password']").send_keys(login_pass)
     driver.find_element_by_xpath("//*[@id='legacy-login']/div[1]/p/button").click()
+    time.sleep(5)
     #driver.save_screenshot("out.png")
 
 def login_google(driver):
-    print("do stuff")
+    login_name = input("Enter your username: ")
+    login_pass = getpass.getpass("Enter your password: ")
+    driver.get(HACKERRANK_LOGIN_URL)
+    driver.find_element_by_class("btn btn-google btn-social").click()
+    main_window_handle = None
+    while not main_window_handle:
+        main_window_handle = driver.current_window_handle
+    signin_window_handle = None
+    while not signin_window_handle:
+        for handle in driver.window_handles:
+            if handle != main_window_handle:
+                signin_window_handle = handle
+                break
+    driver.switch_to.window(signin_window_handle)
+    driver.find_element_by_id("Email").send_keys(login_name)
+    driver.find_element_by_id("Passwd").send_keys(login_pass)
+    driver.switch_to.window(main_window_handle)
 
 def scrape_hackerrank(driver):
-    login_hackerrank(driver)
-    time.sleep(5)
     while True:
         url = input("Enter the problem url to scrape: ")
         filename = input("Enter the file name you want to use: ")
@@ -73,7 +88,8 @@ parser.add_argument("-f", "--file-input", action="store_true", help="read from"
 args = parser.parse_args()
 driver = webdriver.PhantomJS()
 if not args.google:
+    login_hackerrank(driver)
     scrape_hackerrank(driver)
-#driver.set_window_size(1024, 768)
-
+else:
+    login_google(driver)
 
