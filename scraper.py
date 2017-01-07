@@ -26,7 +26,8 @@ def login_google(driver):
     login_name = input("Enter your username: ")
     login_pass = getpass.getpass("Enter your password: ")
     driver.get(HACKERRANK_LOGIN_URL)
-    driver.find_element_by_class("btn btn-google btn-social").click()
+    driver.save_screenshot("out1.png")
+    driver.find_element_by_xpath("//a[@data-analytics='SignupGoogle' and @data-attr2='Login']").click()
     main_window_handle = None
     while not main_window_handle:
         main_window_handle = driver.current_window_handle
@@ -38,7 +39,10 @@ def login_google(driver):
                 break
     driver.switch_to.window(signin_window_handle)
     driver.find_element_by_id("Email").send_keys(login_name)
-    driver.find_element_by_id("Passwd").send_keys(login_pass)
+    driver.find_element_by_id("next").click()
+    time.sleep(5)
+    driver.find_element_by_xpath("//*[@id='Passwd']").send_keys(login_pass)
+    driver.find_element_by_id("signIn").click()
     driver.switch_to.window(main_window_handle)
 
 def scrape_hackerrank(driver):
