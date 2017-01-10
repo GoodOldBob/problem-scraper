@@ -58,9 +58,11 @@ def scrape_hackerrank(driver, args):
         for line in f:
             try:
                 l = line.split(" > ", 1)
+                l[1] = l[1].rstrip("\r\n") # get rid of pesky newlines
                 output_file(l[1], get_problem_hackerrank(driver, l[0]))
             except IndexError:
                 print("Error: Incorrect input file formatting--check if input.file is correct.")
+        f.close()
     #driver.save_screenshot("out1.png")
 
 def get_problem_hackerrank(driver, url):
@@ -91,6 +93,7 @@ def clean_hackerrank(code):
 def output_file(filename, code):
     f = open(filename, "w")
     f.write(code)
+    f.close()
 
 parser = argparse.ArgumentParser(description="Save some submissions from "
                                  "HackerRank.")
