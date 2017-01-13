@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 import getpass
 import time
 import argparse
+import signal
 """
 Before using, make sure PhantomJS is in your PATH.
 """
@@ -108,4 +109,7 @@ if not args.google:
     scrape_hackerrank(driver, args)
 else:
     login_google(driver, args)
+driver.close()
+driver.service.process.send_signal(signal.SIGTERM) # kill phantomjs child proc
+driver.quit()
 
