@@ -5,7 +5,6 @@ HackerRank/LeetCode problem/answer scraper
 **Requirements:**  
 -download and install PhantomJS or use  
 <pre><code>npm install phantomjs</code></pre>
-
 then   
 <pre><code>sudo pip install -r requirements.txt</code></pre>
 
