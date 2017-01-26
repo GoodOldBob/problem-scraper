@@ -12,7 +12,7 @@ Before using, make sure PhantomJS is in your PATH.
 HACKERRANK_LOGIN_URL = "https://www.hackerrank.com/login?h_r=community_home&h_v=log_in&h_l=header_right"
 
 def login_hackerrank(driver):
-    login_name = input("Enter your username: ")
+    login_name = input("Enter your username (rerun with -h for help): ")
     login_pass = getpass.getpass("Enter your password: ")
 
     driver.get(HACKERRANK_LOGIN_URL)
@@ -20,7 +20,6 @@ def login_hackerrank(driver):
     driver.find_element_by_xpath("//input[@data-attr1='UserName' and @id='password']").send_keys(login_pass)
     driver.find_element_by_xpath("//*[@id='legacy-login']/div[1]/p/button").click()
     time.sleep(5)
-    #driver.save_screenshot("out.png")
 
 def login_google(driver, args):
     login_name = input("Enter your username: ")
@@ -50,9 +49,9 @@ def scrape_hackerrank(driver, args):
     if not args.fileinput:
         while True:
             url = input("Enter the problem url to scrape (type stop to stop): ")
-            filename = input("Enter the file name you want to use: ")
             if url == "stop":
                 break
+            filename = input("Enter the file name (path/filename) you want to use: ")
             output_file(filename, get_problem_hackerrank(driver, url))
     else:
         f = open("input.file", "r")
@@ -64,26 +63,19 @@ def scrape_hackerrank(driver, args):
             except IndexError:
                 print("Error: Incorrect input file formatting--check if input.file is correct.")
         f.close()
-    #driver.save_screenshot("out1.png")
 
 def get_problem_hackerrank(driver, url):
     driver.get(url)
     time.sleep(5)
-    #driver.save_screenshot("out2.png")
     html = driver.page_source
     soup = BeautifulSoup(html, "html.parser")
-    #codemirror_start = soup.find_all(class_="CodeMirror-code")
     code_lines = soup.find_all("pre")
-    #print(codemirror_start)
-    #for string in codemirror_start[0].strings:
     code = ""
     for line in code_lines:
         for string in line.strings:
             code = code + repr(string)
         code = code + "\n"
     return clean_hackerrank(code)
-    #print(codemirror_start.contents)
-    #print(soup.prettify())
 
 def clean_hackerrank(code):
     code = code.replace("'", "")
