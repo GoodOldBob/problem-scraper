@@ -3,8 +3,10 @@ HackerRank/LeetCode problem/answer scraper
 (because copy-pasting is so difficult)
 ***
 **Requirements:**  
+-put all your files in the format of input.example   
 -download and install PhantomJS or use  
-<pre><code>npm install phantomjs</code></pre>
-then   
-<pre><code>sudo pip install -r requirements.txt</code></pre>
+`npm install phantomjs`  
+then  
+`sudo pip install -r requirements.txt`  
+`python3 scraper.py --help`
 
